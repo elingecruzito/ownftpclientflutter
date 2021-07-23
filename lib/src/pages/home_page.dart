@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     return FloatingActionButton(
       child: Icon(Icons.add),
       backgroundColor: Colors.lightBlue,
-      onPressed: () => print('Register!!')
+      onPressed: () => Navigator.pushNamed(context, 'register')
     );
   }
 }
