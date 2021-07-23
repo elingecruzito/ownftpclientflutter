@@ -8,15 +8,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Own FTP Client',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
+      initialRoute: '',
+      routes: {
+        
+      },
+      theme: ThemeData(
+        primaryColor: Colors.blue[600]
       ),
     );
   }
