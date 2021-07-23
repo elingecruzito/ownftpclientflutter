@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ownftpclient/src/bloc/register_bloc.dart';
+import 'package:ownftpclient/src/provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({ Key key }) : super(key: key);
@@ -16,6 +18,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final registerBloc = Provider.registerBloc(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -29,8 +34,11 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: EdgeInsets.all(30.0),
               child: Column(
                 children: [
-                  _fieldNameServer(),
-                  _fieldServer(),
+                  _fieldNameServer(registerBloc),
+                  SizedBox(height: 10.0),
+                  _fieldServer(registerBloc),
+                  SizedBox(height: 30.0),
+                  _buttomSubmit(registerBloc)
                 ],
               ),
             ),
@@ -40,39 +48,64 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _fieldNameServer() {
+  Widget _fieldNameServer(RegisterBloc registerBloc) {
     return StreamBuilder(
-      stream: null,
+      stream: registerBloc.nameServerStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return Container(
           child: TextField(
             decoration: InputDecoration(
               icon: Icon(Icons.all_inbox, color: _color_icons),
               labelText: 'Name server:',
-              counter: snapshot.data,
               errorText: snapshot.error,
             ),
+            onChanged: registerBloc.changeNameServer,
           ),
         );
       }
     );
   }
 
-  Widget _fieldServer() {
+  Widget _fieldServer(RegisterBloc registerBloc) {
     return StreamBuilder(
-      stream: null,
+      stream: registerBloc.ipServerStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return Container(
           child: TextField(
             decoration: InputDecoration(
               icon: Icon(Icons.wifi, color: _color_icons),
               labelText: 'Ip server:',
-              counter: snapshot.data,
               errorText: snapshot.error
             ),
+            onChanged: registerBloc.changeIpServer,
           ),
         );
       }
     );
+  }
+
+  Widget _buttomSubmit(RegisterBloc registerBloc) {
+    return StreamBuilder(
+      stream: registerBloc.formValidStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return RaisedButton(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
+            child: Text('Enviar'),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0)
+          ),
+          elevation: 0.0,
+          color: _color_icons,
+          textColor: Colors.white,
+          onPressed: snapshot.hasData ? ()=> _register(context, registerBloc) : null
+        );
+      }
+    );
+  }
+
+  _register(BuildContext context, RegisterBloc registerBloc) {
+    print('Register');
   }
 }

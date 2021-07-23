@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ownftpclient/src/bloc/register_bloc.dart';
 
 class Provider extends InheritedWidget{
+
+  final _registerBloc = new RegisterBloc();
   
   static Provider _instancia;
 
@@ -17,4 +20,6 @@ class Provider extends InheritedWidget{
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 
+  static RegisterBloc registerBloc(BuildContext context) 
+    => context.dependOnInheritedWidgetOfExactType<Provider>()._registerBloc;
 }
