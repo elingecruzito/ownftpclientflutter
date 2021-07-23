@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -5,8 +7,15 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
+    Timer(Duration(seconds: 5), () => print('Hola mundo!!'));
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: Image(
+            image: AssetImage('assets/logo-owncloud.png'),
+          ),
+        ),
+      ),
     );
   }
 }
