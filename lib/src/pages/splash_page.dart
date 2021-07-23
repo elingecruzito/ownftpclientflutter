@@ -7,7 +7,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 5), () => print('Hola mundo!!'));
+    Timer(Duration(seconds: 5), () => Navigator.pushReplacementNamed(context, 'home'));
     return Scaffold(
       body: Center(
         child: Container(

@@ -10,8 +10,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      floatingActionButton: _addServer(),
+    );
+  }
+
+  Widget _addServer() {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      backgroundColor: Colors.lightBlue,
+      onPressed: () => print('Register!!')
     );
   }
 }
