@@ -12,7 +12,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   final _padding_lr = 20.0;
-  final _padding_tb = 250.0;
+  final _padding_tb = 150.0;
   final Color _color_icons = Colors.lightBlue;
   
 
@@ -37,6 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   _fieldNameServer(registerBloc),
                   SizedBox(height: 10.0),
                   _fieldServer(registerBloc),
+                  SizedBox(height: 10.0),
+                  _fieldInitialDirectoryServer(registerBloc),
+                  SizedBox(height: 10.0),
+                  _fieldUserServer(registerBloc),
+                  SizedBox(height: 10.0),
+                  _fieldPasswordServer(registerBloc),
                   SizedBox(height: 30.0),
                   _buttomSubmit(registerBloc)
                 ],
@@ -105,7 +111,63 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  _fieldInitialDirectoryServer(RegisterBloc registerBloc) {
+    return StreamBuilder(
+      stream: registerBloc.initialDirectionStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return Container(
+          child: TextField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.folder, color: _color_icons),
+              labelText: 'Initial directory server:',
+              errorText: snapshot.error
+            ),
+            onChanged: registerBloc.changeInitialDirectionServer,
+          ),
+        );
+      }
+    );
+  }
+
+  _fieldUserServer(RegisterBloc registerBloc) {
+    return StreamBuilder(
+      stream: registerBloc.userServerStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return Container(
+          child: TextField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.person, color: _color_icons),
+              labelText: 'User server:',
+              errorText: snapshot.error
+            ),
+            onChanged: registerBloc.changeUserServer,
+          ),
+        );
+      }
+    );
+  }
+
+  _fieldPasswordServer(RegisterBloc registerBloc) {
+    return StreamBuilder(
+      stream: registerBloc.passwordServerStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return Container(
+          child: TextField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.vpn_key_outlined, color: _color_icons),
+              labelText: 'Password server:',
+              errorText: snapshot.error
+            ),
+            onChanged: registerBloc.changePasswordServer,
+          ),
+        );
+      }
+    );
+  }
+
   _register(BuildContext context, RegisterBloc registerBloc) {
     print('Register');
   }
+
+  
 }
