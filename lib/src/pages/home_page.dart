@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/models/ftp_servers_model.dart';
 import 'package:ownftpclient/src/provider/provider.dart';
+import 'package:ownftpclient/src/provider/register_provider.dart';
 import 'package:ownftpclient/src/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,11 +14,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   List<FtpServers> _dataServers = [];
+  RegisterProvider registerProvider;
 
   @override
   Widget build(BuildContext context) {
 
-    final registerProvider = Provider.registerProvider(context);
+    registerProvider = Provider.registerProvider(context);
     registerProvider.loadServers();
     _dataServers = registerProvider.servers;
 
@@ -59,7 +61,7 @@ class _HomePageState extends State<HomePage> {
               top: 5.0,
               right: 10.0,
               child: InkWell(
-                onTap: () => _deleteServer(dataServer.g01Id),
+                onTap: () => _deleteServer(dataServer),
                 child: Icon(Icons.delete_outline)
               ),
             ),
@@ -96,13 +98,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _deleteServer(int serverId) {
-    final registerProvider = Provider.registerProvider(context);
-    registerProvider.deleteServer(serverId).then(( deleted ){
-      if(deleted){
-        setState(() {});
+  _deleteServer(FtpServers dataServer) {
+
+    showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm...'),
+          content: Text('Do you want to delete ${dataServer.g01Name} server?'),
+          actions: [
+            TextButton( 
+              child: Text('Ok'),
+              onPressed: () {
+                setState(() {
+                  registerProvider.deleteServer(dataServer.g01Id).then(( deleted ){
+                    if(deleted){
+                      registerProvider.loadServers();
+                      _dataServers = registerProvider.servers;
+                      Navigator.of(context).pop();
+                    }
+                  });        
+                });
+              }
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        );
       }
-    });
+    );
     
   }
 }
