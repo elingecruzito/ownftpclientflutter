@@ -26,15 +26,11 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: appBarCustom('Servers'),
-      body: ListView.builder(
-          itemCount: _dataServers.length,
-          itemBuilder: (BuildContext context, int index) => _item(context, _dataServers[index]),
+      body: GridView.count(
+        crossAxisCount: 1, 
+        childAspectRatio: (1 / 0.3),
+        children: List.generate(_dataServers.length, (index) => _item(context, _dataServers[index])),
       ),
-      // GridView.count(
-      //   crossAxisCount: 1, 
-      //   childAspectRatio: (1 / 0.3),
-      //   children: List.generate(_dataServers.length, (index) => _item(context, _dataServers[index])),
-      // ),
       floatingActionButton: _addServer(),
     );
   }
