@@ -54,4 +54,20 @@ class DbProvider{
     return res;
   }
 
+  Future<List<FtpServers>> getAllServers() async {
+    final db = await database;
+    final res = await db.query('g01_ftp_servers');
+
+    return res.isNotEmpty
+          ? res.map((e) => FtpServers.fromJson(e)).toList()
+          : [];
+  }
+
+  Future<int> deleteServer(int id) async{
+    final db = await database;
+    final res = db.delete('g01_ftp_servers', where: 'g01_id = ?', whereArgs: [id]);
+
+    return res;
+  }
+
 }

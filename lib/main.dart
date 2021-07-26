@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Own FTP Client',
         debugShowCheckedModeBanner: false,
-        initialRoute: 'register',
+        initialRoute: 'home',
         routes: {
           'splash': (BuildContext context) => SplashPage(), 
           'home': (BuildContext context) => HomePage(),

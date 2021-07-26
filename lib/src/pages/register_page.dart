@@ -169,6 +169,14 @@ class _RegisterPageState extends State<RegisterPage> {
   _register(BuildContext context, RegisterBloc registerBloc) {
     final registerProvider = Provider.registerProvider(context);
     final res = registerProvider.addServer(registerBloc);
+
+    res.then((isRegister){
+      if( isRegister ){
+        registerBloc.dispose();
+        Navigator.pop(context, true);
+      }
+    });
+    
   }
 
   

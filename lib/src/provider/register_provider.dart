@@ -5,15 +5,9 @@ import 'package:ownftpclient/src/provider/db_provider.dart';
 
 class RegisterProvider extends ChangeNotifier{
 
-  Future<bool> addServer(RegisterBloc registerBloc) async{
+  List<FtpServers> servers = [];
 
-    /*
-    g01_name TEXT,
-    g01_ip TEXT,
-    g01_initial_directory TEXT,
-    g01_user TEXT,
-    g01_password TEXT
-    */
+  Future<bool> addServer(RegisterBloc registerBloc) async{
 
     final ftpServer = new FtpServers();
     ftpServer.g01Name = registerBloc.name_server;
@@ -28,6 +22,21 @@ class RegisterProvider extends ChangeNotifier{
       return false;
     }
     return true;
+  }
+
+  loadServers() async{
+    final servers = await DbProvider.db.getAllServers();
+    this.servers = [...servers];
+    notifyListeners();
+  }
+
+  Future<bool> deleteServer(int id) async{
+    final res = await DbProvider.db.deleteServer(id);
+    if( !res.isNaN ){
+      this.loadServers();
+      return true;
+    }
+    return false;
   }
 
 }
