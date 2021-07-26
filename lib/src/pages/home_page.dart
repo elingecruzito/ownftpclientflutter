@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/models/ftp_servers_model.dart';
+import 'package:ownftpclient/src/pages/register_page.dart';
 import 'package:ownftpclient/src/provider/provider.dart';
 import 'package:ownftpclient/src/provider/register_provider.dart';
 import 'package:ownftpclient/src/utils/utils.dart';
@@ -25,11 +26,15 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: appBarCustom('Servers'),
-      body: GridView.count(
-        crossAxisCount: 1, 
-        childAspectRatio: (1 / 0.3),
-        children: List.generate(_dataServers.length, (index) => _item(context, _dataServers[index])),
+      body: ListView.builder(
+          itemCount: _dataServers.length,
+          itemBuilder: (BuildContext context, int index) => _item(context, _dataServers[index]),
       ),
+      // GridView.count(
+      //   crossAxisCount: 1, 
+      //   childAspectRatio: (1 / 0.3),
+      //   children: List.generate(_dataServers.length, (index) => _item(context, _dataServers[index])),
+      // ),
       floatingActionButton: _addServer(),
     );
   }
@@ -40,10 +45,17 @@ class _HomePageState extends State<HomePage> {
       child: Icon(Icons.add),
       backgroundColor: Colors.lightBlue,
       onPressed: () async{
-        final res = await Navigator.pushNamed(context, 'register');
-        if(res){
-          print(res.toString());
-          setState(() {});
+        final res = await Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => RegisterPage()
+          )
+        );
+        if( res ){
+          await registerProvider.loadServers();
+          setState(() {
+            _dataServers = registerProvider.servers;
+          });
         }
         
       }
@@ -110,14 +122,14 @@ class _HomePageState extends State<HomePage> {
             TextButton( 
               child: Text('Ok'),
               onPressed: () {
-                setState(() {
-                  registerProvider.deleteServer(dataServer.g01Id).then(( deleted ){
-                    if(deleted){
-                      registerProvider.loadServers();
+                registerProvider.deleteServer(dataServer.g01Id).then(( deleted ) async{
+                  if( deleted ){
+                    Navigator.of(context).pop();
+                    await registerProvider.loadServers();
+                    setState(() {
                       _dataServers = registerProvider.servers;
-                      Navigator.of(context).pop();
-                    }
-                  });        
+                    });
+                  }
                 });
               }
             ),
