@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ownftpclient/src/models/ftp_servers_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -32,10 +33,25 @@ class DbProvider{
       onOpen: (db){ },
       onCreate: (Database db, int version) async{
         await db.execute('''
+          CREATE TABLE g01_ftp_servers(
+            g01_id INTEGER PRIMARY KEY,
+            g01_name TEXT,
+            g01_ip TEXT,
+            g01_initial_directory TEXT,
+            g01_user TEXT,
+            g01_password TEXT
+          )
         ''');
       }
     );
 
+  }
+
+  Future<int> addServer(FtpServers ftpServer) async{
+    final db = await database;
+    final res = await db.insert('g01_ftp_servers', ftpServer.toJson() );
+
+    return res;
   }
 
 }

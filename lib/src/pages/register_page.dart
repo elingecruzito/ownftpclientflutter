@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/bloc/register_bloc.dart';
 import 'package:ownftpclient/src/provider/provider.dart';
+import 'package:ownftpclient/src/provider/register_provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({ Key key }) : super(key: key);
@@ -166,7 +167,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _register(BuildContext context, RegisterBloc registerBloc) {
-    print('Register');
+    final registerProvider = Provider.registerProvider(context);
+    final res = registerProvider.addServer(registerBloc);
   }
 
   

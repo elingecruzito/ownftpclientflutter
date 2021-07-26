@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/bloc/register_bloc.dart';
+import 'package:ownftpclient/src/provider/register_provider.dart';
 
 class Provider extends InheritedWidget{
 
   final _registerBloc = new RegisterBloc();
+  final _registerProvider = new RegisterProvider();
   
   static Provider _instancia;
 
@@ -22,4 +24,7 @@ class Provider extends InheritedWidget{
 
   static RegisterBloc registerBloc(BuildContext context) 
     => context.dependOnInheritedWidgetOfExactType<Provider>()._registerBloc;
+
+  static RegisterProvider registerProvider(BuildContext context)
+    => context.dependOnInheritedWidgetOfExactType<Provider>()._registerProvider;
 }
