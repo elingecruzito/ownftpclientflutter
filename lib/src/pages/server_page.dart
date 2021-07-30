@@ -17,12 +17,13 @@ class _ServerPageState extends State<ServerPage> {
   FtpServers _dataServer;
   String _namePage;
   List<FTPEntry> _directory;
+  DirectoryBloc _directoryBloc;
 
   @override
   Widget build(BuildContext context) {
 
     _dataServer = ModalRoute.of(context).settings.arguments;
-    final _directoryBloc = Provider.directoryBloc(context);
+    _directoryBloc = Provider.directoryBloc(context);
 
     _dataServer.g01CompleteDirectory = _dataServer.g01CompleteDirectory == null ?
                                       _dataServer.g01InitialDirectory :
@@ -56,10 +57,10 @@ class _ServerPageState extends State<ServerPage> {
 
   _createListFiles() {
     return StreamBuilder(
-      stream: null,
+      stream: _directoryBloc.directorStream,
       builder: (BuildContext context, AsyncSnapshot<List<FTPEntry>> snapshot){
         if( snapshot.hasData && _directory != snapshot.data){
-
+          _directory = snapshot.data;
           return GridView.count(
             crossAxisCount: 2,
             childAspectRatio: ( 1 / .7 ),
@@ -75,5 +76,30 @@ class _ServerPageState extends State<ServerPage> {
     );
   }
 
-  _itemWidget(BuildContext context, FTPEntry data) {}
+  _itemWidget(BuildContext context, FTPEntry data) {
+    return InkWell(
+      hoverColor: Colors.blueAccent,
+      onTap: () => print(data.toString()),
+      child: Card(
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0)
+        ),
+        child: Column(
+          children: [
+            Image(
+              image: AssetImage(
+                data.type == FTPEntryType.DIR ? 
+                'assets/logo-folder.png' : 
+                'assets/logo-file.png',
+              ),
+              width: 100.0,
+              fit: BoxFit.cover,
+            ),
+            Text(data.name, overflow: TextOverflow.ellipsis),
+          ],
+        ),
+      ),
+    );
+  }
 }
