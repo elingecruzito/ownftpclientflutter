@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/models/ftp_servers_model.dart';
 import 'package:ownftpclient/src/utils/utils.dart';
@@ -42,7 +40,7 @@ class _ServerPageState extends State<ServerPage> {
       print('Hola mundo!!');
     }else{
       _dataServer = null;
-      Navigator.of(context).pop(true);
+      // Navigator.of(context).pop(true);
     }
 
   }
@@ -61,7 +59,7 @@ class _ServerPageState extends State<ServerPage> {
 
         }else{
 
-          return Center( child: CircularProgressIndicator())
+          return Center( child: CircularProgressIndicator());
 
         }
       }
