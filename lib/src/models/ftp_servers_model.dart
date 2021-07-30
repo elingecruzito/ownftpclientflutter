@@ -16,6 +16,8 @@ class FtpServers {
         this.g01InitialDirectory,
         this.g01User,
         this.g01Password,
+        this.g01LastDir,
+        this.g01CompleteDirectory,
     });
 
     int g01Id;
@@ -24,6 +26,8 @@ class FtpServers {
     String g01InitialDirectory;
     String g01User;
     String g01Password;
+    String g01LastDir;
+    String g01CompleteDirectory;
 
     factory FtpServers.fromJson(Map<String, dynamic> json) => FtpServers(
         g01Id: json["g01_id"],
@@ -32,6 +36,8 @@ class FtpServers {
         g01InitialDirectory: json["g01_initial_directory"],
         g01User: json["g01_user"],
         g01Password: json["g01_password"],
+        g01LastDir: json["g01_last_dir"],
+        g01CompleteDirectory: json["g01_complete_directory"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -41,5 +47,7 @@ class FtpServers {
         "g01_initial_directory": g01InitialDirectory,
         "g01_user": g01User,
         "g01_password": g01Password,
+        "g01_last_dir": g01LastDir,
+        "g01_complete_directory": g01CompleteDirectory,
     };
 }
