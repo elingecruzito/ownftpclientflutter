@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () => print(dataServer.toJson().toString()),
+                  onTap: () => Navigator.pushNamed(context, 'files', arguments: dataServer), // init server page
                   child: Container(
                     padding: EdgeInsets.fromLTRB(10.0, 35.0, 0.0, 0.0),
                     child: Column(
