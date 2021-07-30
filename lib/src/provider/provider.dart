@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:ownftpclient/src/bloc/directory_bloc.dart';
 import 'package:ownftpclient/src/bloc/register_bloc.dart';
 import 'package:ownftpclient/src/provider/register_provider.dart';
 
@@ -6,6 +9,7 @@ class Provider extends InheritedWidget{
 
   final _registerBloc = new RegisterBloc();
   final _registerProvider = new RegisterProvider();
+  final _directoryBloc = DirectoryBloc();
   
   static Provider _instancia;
 
@@ -27,4 +31,7 @@ class Provider extends InheritedWidget{
 
   static RegisterProvider registerProvider(BuildContext context)
     => context.dependOnInheritedWidgetOfExactType<Provider>()._registerProvider;
+
+  static DirectoryBloc directoryBloc(BuildContext context)
+    => context.dependOnInheritedWidgetOfExactType<Provider>()._directoryBloc;
 }

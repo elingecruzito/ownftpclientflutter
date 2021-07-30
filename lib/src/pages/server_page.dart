@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ownftpclient/src/bloc/directory_bloc.dart';
 import 'package:ownftpclient/src/models/ftp_servers_model.dart';
+import 'package:ownftpclient/src/provider/provider.dart';
 import 'package:ownftpclient/src/utils/utils.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 
@@ -20,6 +22,13 @@ class _ServerPageState extends State<ServerPage> {
   Widget build(BuildContext context) {
 
     _dataServer = ModalRoute.of(context).settings.arguments;
+    final _directoryBloc = Provider.directoryBloc(context);
+
+    _dataServer.g01CompleteDirectory = _dataServer.g01CompleteDirectory == null ?
+                                      _dataServer.g01InitialDirectory :
+                                      _dataServer.g01CompleteDirectory;
+
+    _directoryBloc.loadDirectory(_dataServer);
 
     _namePage = _dataServer.g01LastDir == null ?
                 _dataServer.g01Name :
