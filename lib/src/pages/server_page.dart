@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ownftpclient/src/bloc/directory_bloc.dart';
 import 'package:ownftpclient/src/models/ftp_servers_model.dart';
@@ -44,19 +46,9 @@ class _ServerPageState extends State<ServerPage> {
     );
   }
 
-  Future<bool> _onBackPressed() {
-    
-    if( false ){
-      print('Hola mundo!!');
-    }else{
-      _dataServer = null;
-      // Navigator.of(context).pop(true);
-    }
-
-  }
-
-  _createListFiles() {
+  Widget _createListFiles() {
     return StreamBuilder(
+      key: Key(getRandString(Random().nextInt(9999))),
       stream: _directoryBloc.directorStream,
       builder: (BuildContext context, AsyncSnapshot<List<FTPEntry>> snapshot){
         if( snapshot.hasData && _directory != snapshot.data){
@@ -76,10 +68,18 @@ class _ServerPageState extends State<ServerPage> {
     );
   }
 
-  _itemWidget(BuildContext context, FTPEntry data) {
+  Widget _itemWidget(BuildContext context, FTPEntry data) {
     return InkWell(
       hoverColor: Colors.blueAccent,
-      onTap: () => print(data.toString()),
+      onTap: (){
+        if( data.type == FTPEntryType.DIR ){
+          setState(() {
+            _dataServer.enterDirectory(data.name);            
+          });
+        }else{
+          alert(context, data.name);
+        }
+      },
       child: Card(
         elevation: 10.0,
         shape: RoundedRectangleBorder(
@@ -101,5 +101,23 @@ class _ServerPageState extends State<ServerPage> {
         ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() {
+    
+    if( _dataServer.g01InitialDirectory != _dataServer.g01CompleteDirectory && 
+        _dataServer.g01CompleteDirectory != null){
+
+          setState(() {
+            _dataServer.onBack();      
+          });
+      
+    }else{
+      _dataServer = null;
+      _directory.clear();
+      // _directoryBloc.disponse();
+      Navigator.of(context).pop(true);
+    }
+
   }
 }

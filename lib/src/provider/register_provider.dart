@@ -16,6 +16,10 @@ class RegisterProvider extends ChangeNotifier{
     ftpServer.g01User = registerBloc.user_server;
     ftpServer.g01Password = registerBloc.password_server;
 
+    if( ftpServer.g01InitialDirectory.substring(ftpServer.g01InitialDirectory.length - 1) != '/'){
+      ftpServer.g01InitialDirectory += '/';
+    }
+
     final newId = await DbProvider.db.addServer(ftpServer);
     
     if( newId.isNaN ){

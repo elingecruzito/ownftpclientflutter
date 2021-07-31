@@ -44,4 +44,21 @@ class FtpServers {
         "g01_user": g01User,
         "g01_password": g01Password,
     };
+
+    void enterDirectory(String directory){
+      this.g01LastDir = directory + '/';
+      if( this.g01CompleteDirectory != null ){
+        this.g01CompleteDirectory = this.g01InitialDirectory + this.g01LastDir;
+      }else{
+        this.g01CompleteDirectory += this.g01LastDir;
+      }
+    }
+
+    void onBack(){
+      this.g01CompleteDirectory = this.g01CompleteDirectory.replaceAll(this.g01LastDir, '');
+      final arrayString = this.g01CompleteDirectory.split('/');
+      this.g01LastDir = arrayString[arrayString.length - 1] != "" ?  
+                        arrayString[arrayString.length-1] : 
+                        arrayString[arrayString.length-2];
+    }
 }
